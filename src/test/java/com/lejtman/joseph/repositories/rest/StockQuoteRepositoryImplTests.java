@@ -1,6 +1,7 @@
 package com.lejtman.joseph.repositories.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.*;
 
 import java.time.Instant;
@@ -21,6 +22,11 @@ public class StockQuoteRepositoryImplTests {
 		assertThat(s.getPriceInCents()).isGreaterThan(0);
 		assertEquals(s.getSymbol().toLowerCase(), "msft");
 		assertThat(s.getTimestamp().until(Instant.now(), ChronoUnit.HOURS) < 72);
+	}
+	
+	@Test
+	public void testRepoWhenInvalidSymbol() {
+		assertThatThrownBy(()-> repo.getQuote("blahblah")).isInstanceOf(IllegalArgumentException.class);
 	}
 
 }
