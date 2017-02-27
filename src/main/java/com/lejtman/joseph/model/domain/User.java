@@ -1,6 +1,6 @@
 package com.lejtman.joseph.model.domain;
 
-import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,6 +10,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 public class User {
 
@@ -18,12 +23,12 @@ public class User {
 	private long id;
 	private String firstName;
 	private String lastName;
-	private Instant createdTimestamp;
+	private final ZonedDateTime createdTimestamp = ZonedDateTime.now();
 	
 	@OneToMany
-	private Set<Portfolio> portfolios;
+	private Set<Portfolio> portfolios = new HashSet<>();
 	
-	
+	private User(){}
 
 	/**
 	 * @param firstName
@@ -33,8 +38,6 @@ public class User {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.createdTimestamp = Instant.now();
-		this.portfolios = new HashSet<>();
 	}
 
 	/**
@@ -61,13 +64,15 @@ public class User {
 	/**
 	 * @return the createdTimestamp
 	 */
-	public Instant getCreatedTimestamp() {
+	 @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+	public ZonedDateTime getCreatedTimestamp() {
 		return createdTimestamp;
 	}
 
 	/**
 	 * @return the portfolios
 	 */
+	@JsonIgnore
 	public Set<Portfolio> getPortfolios() {
 		return new HashSet<>(portfolios);
 	}
