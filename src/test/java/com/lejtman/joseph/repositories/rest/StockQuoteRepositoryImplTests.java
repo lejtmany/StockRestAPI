@@ -9,19 +9,21 @@ import java.time.temporal.ChronoUnit;
 
 import org.junit.Test;
 
-import com.lejtman.joseph.model.domain.Stock;
+import com.lejtman.joseph.model.domain.Exchange;
+import com.lejtman.joseph.model.domain.StockQuote;
 
 public class StockQuoteRepositoryImplTests {
 
-	private StockQuoteRepositoryImpl repo = new StockQuoteRepositoryImpl("http://dev.markitondemand.com/MODApis/Api/v2/Quote/json?symbol=");
+	private StockQuoteRepositoryImpl repo = new StockQuoteRepositoryImpl("http://dev.markitondemand.com/MODApis/Api/v2/Lookup/json?input=", "http://dev.markitondemand.com/MODApis/Api/v2/Quote/json?symbol=");
 	
 
 	@Test
 	public void testRepoWorks() {
-		Stock s = repo.getQuote("msft");
+		StockQuote s = repo.getQuote("msft");
 		assertThat(s.getPriceInCents()).isGreaterThan(0);
-		assertEquals(s.getSymbol().toLowerCase(), "msft");
+		assertEquals(s.getStock().getSymbol().toLowerCase(), "msft");
 		assertThat(s.getTimestamp().until(Instant.now(), ChronoUnit.HOURS) < 72);
+		assertThat(s.getStock().getExchange().equals(Exchange.NASDAQ));
 	}
 	
 	@Test

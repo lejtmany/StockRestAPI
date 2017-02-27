@@ -1,7 +1,10 @@
 package com.lejtman.joseph.repositories;
 
-import com.lejtman.joseph.model.domain.Stock;
+import org.springframework.stereotype.Repository;
 
+import com.lejtman.joseph.model.domain.StockQuote;
+
+@Repository
 public interface StockQuoteRepository {
-	public Stock getQuote(String symbol);
+	public StockQuote getQuote(String symbol);
 }
