@@ -6,4 +6,5 @@ public interface UserService {
 	
 	Iterable<User> getAllUsers();
 	User saveUser(User u);
+	User getUserById(long id);
 }

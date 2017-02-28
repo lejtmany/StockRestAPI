@@ -30,6 +30,11 @@ public class UserServiceImpl implements UserService{
 		this.userRepository = userRepository;
 	}
 
+	@Override
+	public User getUserById(long id) {
+		return userRepository.findOne(id);
+	}
+
 
 	
 
